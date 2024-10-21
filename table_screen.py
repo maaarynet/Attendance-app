@@ -7,23 +7,21 @@ class TableScreen(ScreenInterface):
         self.screen = screen
         self.students = students
         self.data_manager = data_manager
-        self.add_student_callback = add_student_callback  # callback для добавления студента
+        self.add_student_callback = add_student_callback
         self.current_row = 0
         self.current_col = 0
         self.font = pygame.font.SysFont('Consolas', 18)
         self.colors = {'WHITE': (255, 255, 255), 'BLACK': (0, 0, 0), 'BLUE': (0, 0, 255)}
-        self.button_rect = pygame.Rect(650, 600, 100, 50)  # Размеры и позиция кнопки "+"
+        self.button_rect = pygame.Rect(650, 600, 100, 50)
 
     def display(self):
         self.screen.fill(self.colors['WHITE'])
         header = ['Name', 'Date 1', 'Date 2', 'Date 3']
 
-        # Отображаем заголовки таблицы
         for col, text in enumerate(header):
             text_surface = self.font.render(text, True, self.colors['BLACK'])
             self.screen.blit(text_surface, (150 + col * 150, 50))
 
-        # Отображаем данные студентов
         for row, student in enumerate(self.students):
             name_surface = self.font.render(student.name, True, self.colors['BLACK'])
             self.screen.blit(name_surface, (150, 100 + row * 50))
@@ -32,20 +30,16 @@ class TableScreen(ScreenInterface):
                 date_surface = self.font.render(str(student.attendance[col]), True, color)
                 self.screen.blit(date_surface, (150 + (col + 1) * 150, 100 + row * 50))
 
-        # Загрузка иконки "+" (иконка должна быть в том же каталоге или указать правильный путь)
         self.plus_icon = pygame.image.load('plus.png')
-        self.plus_icon = pygame.transform.scale(self.plus_icon, (50, 50))  # Измените размер иконки, если нужно
+        self.plus_icon = pygame.transform.scale(self.plus_icon, (50, 50))
 
-        # Отрисовка иконки "+" вместо круга и текста
         self.screen.blit(self.plus_icon, self.plus_icon.get_rect(center=self.button_rect.center))
 
 
     def handle_event(self, event):
-        """ Обрабатываем события навигации по таблице """
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.button_rect.collidepoint(event.pos):
-                print("Кнопка нажата!")  # Отладочное сообщение для проверки
-                self.add_student_callback()  # Вызываем функцию добавления студента
+                self.add_student_callback()
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
@@ -72,13 +66,9 @@ class TableScreen(ScreenInterface):
             self.students[self.current_row] = RegularStudent(student.name, student.gender, student.avatar, student.attendance)
 
     def add_student(self, name, gender):
-        # Выбираем аватар для студента
         avatar = self.data_manager.choose_avatar(gender)
-        # Создаем нового студента с начальной посещаемостью [0, 0, 0]
         new_student = Student(name, gender, avatar, [0, 0, 0])
-        # Добавляем студента в список
         self.students.append(new_student)
-        # Сохраняем данные в CSV
         self.data_manager.save_data(self.students)
-        print(f"Студент {name} успешно добавлен.")
+        print(f"Студент {name} був успішно додатий.")
 

@@ -13,9 +13,9 @@ class Student:
 class HonorStudent(Student):
     def __init__(self, name, gender, avatar, attendance):
         super().__init__(name, gender, avatar, attendance)
-        self.scholarship = True  # Студент со стипендией
+        self.scholarship = True
 
 class RegularStudent(Student):
     def __init__(self, name, gender, avatar, attendance):
         super().__init__(name, gender, avatar, attendance)
-        self.scholarship = False  # Студент без стипендии
+        self.scholarship = False

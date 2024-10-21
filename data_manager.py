@@ -15,15 +15,12 @@ class CSVDataManager:
         with open(self.file_path, mode='r', newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                # Преобразуем attendance из строки в список целых чисел
                 attendance = list(map(int, row['attendance'].split(',')))
 
-                # Выбираем аватар на основе пола студента
                 gender = row['gender']
                 avatar = self.choose_avatar(gender)
 
-                # Создаем экземпляр Student на основе процента посещаемости
-                if sum(attendance) / len(attendance) > 0.67:  # Более 67% посещаемости
+                if sum(attendance) / len(attendance) > 0.67:
                     student = HonorStudent(row['name'], gender, avatar, attendance)
                 else:
                     student = RegularStudent(row['name'], gender, avatar, attendance)
@@ -46,7 +43,7 @@ class CSVDataManager:
     def choose_avatar(self, gender):
         if gender == 'male':
             available_avatars = [avatar for avatar in self.male_avatars if avatar not in self.used_male_avatars]
-            if not available_avatars:  # Если все аватары использованы, начинаем сначала
+            if not available_avatars:
                 self.used_male_avatars.clear()
                 available_avatars = self.male_avatars
 
@@ -55,7 +52,7 @@ class CSVDataManager:
 
         else:
             available_avatars = [avatar for avatar in self.female_avatars if avatar not in self.used_female_avatars]
-            if not available_avatars:  # Если все аватары использованы, начинаем сначала
+            if not available_avatars:
                 self.used_female_avatars.clear()
                 available_avatars = self.female_avatars
 
